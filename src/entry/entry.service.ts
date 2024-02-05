@@ -17,18 +17,18 @@ export class EntryService {
   }
 
   findAll() {
-    return `This action returns all entry`;
+    return this.entryRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} entry`;
+    return this.entryRepository.findOneBy({id})
   }
 
   update(id: number, updateEntryDto: UpdateEntryDto) {
-    return `This action updates a #${id} entry`;
+    return this.entryRepository.update(id, updateEntryDto)
   }
 
   remove(id: number) {
-    return `This action removes a #${id} entry`;
+    return this.entryRepository.delete(id);
   }
 }
