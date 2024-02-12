@@ -12,7 +12,8 @@ import { EntryModule } from './entry/entry.module';
    TypeOrmModule.forRootAsync({
      imports: [ConfigModule],
      useFactory: (configService: ConfigService) => ({
-       type: 'postgres',
+      url: process.env.DATABASE_URL, 
+      type: 'postgres',
        host: configService.get('DB_HOST'),
        port: +configService.get<number>('DB_PORT'),
        username: configService.get('DB_USERNAME'),
