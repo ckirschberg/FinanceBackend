@@ -1,4 +1,5 @@
 import { IsDate, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { Category } from "../../categories/entities/category.entity";
 
 export class CreateEntryDto {
 
@@ -21,6 +22,8 @@ export class CreateEntryDto {
     @IsOptional()
     @IsString()
     comment: string
+
+    category: Category;
 
     constructor(amount: number, date: Date, currency: string, name: string, comment: string){
         this.amount = amount;
