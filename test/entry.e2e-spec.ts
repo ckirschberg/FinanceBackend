@@ -7,10 +7,13 @@ import { Category } from '../src/categories/entities/category.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CategoriesService } from '../src/categories/categories.service';
 import { CreateCategoryDto } from '../src/categories/dto/create-category.dto';
+import { Entry } from '../src/entry/entities/entry.entity';
+import { Repository } from 'typeorm';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
   let categoriesService: CategoriesService;
+  let entryRepository: Repository<Entry>
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -19,6 +22,8 @@ describe('AppController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     categoriesService = moduleFixture.get(CategoriesService);
+    entryRepository = moduleFixture.get(getRepositoryToken(Entry))
+    entryRepository.query("DELETE FROM entry")
 
     app.useGlobalPipes(new ValidationPipe())
     await app.init();
@@ -37,10 +42,10 @@ describe('AppController (e2e)', () => {
         it('should create a new entry when passed a valid entry', async () => {
             // Arrange
             const savedCategory = await categoriesService.create(new CreateCategoryDto("Take-out"));
-            console.log("savedCategory", savedCategory);
+            // console.log("savedCategory", savedCategory);
 
-            const validEntry = new CreateEntryDto(100, new Date(), 'DKK', 'Umuts Pizza', 'I should not buy takeout');
-            validEntry.category = savedCategory;
+            const validEntry = new CreateEntryDto(100, new Date(), 'DKK', 'Umuts Pizza', 'I should not buy takeout', 'description', savedCategory);
+            // validEntry.category = savedCategory;
 
             // Act
             const {body} = await request(app.getHttpServer())
@@ -48,13 +53,13 @@ describe('AppController (e2e)', () => {
                 .send(validEntry)
                 .expect(201)
 
-                console.log("savedEntry", body);
+                // console.log("savedEntry", body);
                 
             expect(body.amount).toEqual(100);
             expect(body.id).toBeDefined();
         });
         it('should return error message when passed an invalid entry', async () => {
-            const inValidEntry = new CreateEntryDto(100, new Date(), 'DKK', '', 'I should not buy takeout');
+            const inValidEntry = new CreateEntryDto(100, new Date(), 'DKK', '', 'I should not buy takeout', 'description');
         
             const {body} = await request(app.getHttpServer())
                 .post('/entry')

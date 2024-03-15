@@ -23,13 +23,19 @@ export class CreateEntryDto {
     @IsString()
     comment: string
 
+    @IsNotEmpty()
+    @IsString()
+    description: string
+
     category: Category;
 
-    constructor(amount: number, date: Date, currency: string, name: string, comment: string){
+    constructor(amount: number, date: Date, currency: string, name: string, comment: string, description: string, category?: Category){
         this.amount = amount;
         this.date = date;
         this.currency = currency;
         this.name = name;
         this.comment = comment;
+        this.description = description;
+        this.category = category
     } 
 }
