@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import { UserEntity } from './entities/user';
+import { Role } from '../users/role';
 
 @Injectable()
 export class AuthService {
@@ -8,6 +10,10 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
+
+    async upgrade(userId: number) {
+      return this.usersService.upgrade(userId)
+    }
 
   async signup(user: any) {
     return this.usersService.create(user.username, user.password);

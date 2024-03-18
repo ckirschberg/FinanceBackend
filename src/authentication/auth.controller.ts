@@ -6,10 +6,27 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller()
 export class AuthController {
   constructor(private authService: AuthService) {}
+
+  @UseGuards(JwtAuthGuard)
+  @Post('auth/upgrade')
+  upgrade(@Request2() req) {
+    // if (this.authService.payViaGateway(information)) {
+      return this.authService.upgrade(req.user.id)
+    // } else 
+    // { 
+      // return error message
+    // }
+    // call a payment gateway and send users credit card
+    // if payment is successful, then upgrade, otherwise do not.
+
+    
+  }
+
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')

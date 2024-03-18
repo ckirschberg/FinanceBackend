@@ -2,10 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './../authentication/entities/user';
 import { Repository } from 'typeorm';
+import { Role } from './role';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectRepository(UserEntity) private userRepository: Repository<UserEntity>) {}
+
+    async upgrade(userId: number) {
+      const user = await this.findUserById(userId); // Finding the user by the userId
+      user.role = Role.PremiumUser; // Changing the role in memory. 
+      return this.userRepository.save(user); // Saving the updated user obj. into database
+    }
 
     async findUserById(id: number) : Promise<UserEntity> {
         return this.userRepository.findOne({where: {id: id}});

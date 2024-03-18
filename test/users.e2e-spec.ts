@@ -6,12 +6,15 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Connection, Repository } from 'typeorm'
 import { UserEntity } from '../src/authentication/entities/user';
 import { UsersService } from '../src/users/users.service';
+import { AuthService } from '../src/authentication/auth.service';
+import { log } from 'console';
 
 describe('ProblemController (e2e)', () => {
   let app: INestApplication;
   let moduleFixture: TestingModule;
   let usersRepository: Repository<UserEntity>
   let usersService: UsersService
+  let authService: AuthService
   let connection: Connection
 
   beforeEach(async () => {
@@ -20,6 +23,7 @@ describe('ProblemController (e2e)', () => {
     }).compile();
     
     usersService = moduleFixture.get(UsersService);
+    authService = moduleFixture.get(AuthService);
     usersRepository = moduleFixture.get(getRepositoryToken(UserEntity))
     usersRepository.query("DELETE FROM user_entity")
 
@@ -61,6 +65,24 @@ describe('ProblemController (e2e)', () => {
                             
           expect(body.access_token).toBeDefined()
         });
+    })
+
+    describe('Upgrade users', () => {
+      it('should upgrade the role of the user to premium', async () => {
+        const signedUpUser = await usersService.create('kirs', '1234');
+
+        const {access_token} = await authService.login({username: 'kirs', password: '1234'});
+
+        const {body} = await request(app.getHttpServer())
+                            .post('/auth/upgrade')
+                            .auth(access_token, {type: 'bearer'})
+                            .send()
+        
+        expect(body.role).toEqual("premium")
+        
+
+        // expect(body.message).toEqual("You got through the gate")
+      })
     })
 
     
