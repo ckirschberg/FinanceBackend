@@ -13,6 +13,6 @@ export class PremiumUserGuard implements CanActivate {
 
     const user = await this.usersService.findUserById(userId);
 
-    return user && user.role === Role.PremiumUser
+    return user && user.role === Role.PremiumUser || user.role === Role.Admin
   }
 }

@@ -9,11 +9,15 @@ import { CategoriesService } from '../src/categories/categories.service';
 import { CreateCategoryDto } from '../src/categories/dto/create-category.dto';
 import { Entry } from '../src/entry/entities/entry.entity';
 import { Repository } from 'typeorm';
+import { UsersService } from '../src/users/users.service';
+import { AuthService } from '../src/authentication/auth.service';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
   let categoriesService: CategoriesService;
   let entryRepository: Repository<Entry>
+  let usersService: UsersService;
+  let authService: AuthService;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -21,13 +25,34 @@ describe('AppController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    usersService = moduleFixture.get(UsersService);
     categoriesService = moduleFixture.get(CategoriesService);
+    authService = moduleFixture.get(AuthService);
     entryRepository = moduleFixture.get(getRepositoryToken(Entry))
     entryRepository.query("DELETE FROM entry")
 
     app.useGlobalPipes(new ValidationPipe())
     await app.init();
   });
+
+  describe('protected-endpoint', () => {
+    it('should give access to admins', async () => {
+        // Signup user
+        // Login user
+        // Access protected endpoint.
+        const signedUpUser = await usersService.create('kirs', '1234');
+
+        const {access_token} = await authService.login({username: 'kirs', password: '1234'});
+
+        const {body} = await request(app.getHttpServer())
+                            .post('/entry/protected-endpoint')
+                            .auth(access_token, {type: 'bearer'})
+                            .send()
+                            
+        expect(body.message).toEqual("You got through the gate")
+    })
+  })
+
 
   describe('/ (GET) entry controller', () => {
     it('/ (GET)', () => {

@@ -1,12 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { EntryService } from './entry.service';
 import { CreateEntryDto } from './dto/create-entry.dto';
 import { UpdateEntryDto } from './dto/update-entry.dto';
+import { JwtAuthGuard } from '../authentication/jwt-auth.guard';
+import { AdminGuard } from '../authentication/admin.guard';
 
 @Controller('entry')
 export class EntryController {
   constructor(private readonly entryService: EntryService) {}
 
+
+
+  @UseGuards(JwtAuthGuard)
+  @Post("protected-endpoint")
+  testProtectedEndpoint() {
+    console.log("You got through the gate");
+    return { message: "You got through the gate" }
+  }
+
+  // @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createEntryDto: CreateEntryDto) {
     return this.entryService.create(createEntryDto);
