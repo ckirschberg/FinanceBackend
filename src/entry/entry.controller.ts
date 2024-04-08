@@ -20,10 +20,15 @@ export class EntryController {
 
   // @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createEntryDto: CreateEntryDto) {
+  async create(@Body() createEntryDto: CreateEntryDto) {
+    
+    const display_url = await this.entryService.saveImage(createEntryDto.photo.base64);
+    createEntryDto.photo = display_url; //just save the url to the image in our database.
+
     return this.entryService.create(createEntryDto);
   }
 
+  
   @Get()
   findAll() {
     return this.entryService.findAll();

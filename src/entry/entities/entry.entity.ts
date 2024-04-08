@@ -24,6 +24,9 @@ export class Entry {
     @Column() 
     description: string
 
+    @Column() 
+    photo: string
+
     @ManyToOne(() => Category, (category) => category.entries, {
         eager: true
     })

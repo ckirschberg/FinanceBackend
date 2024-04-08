@@ -29,7 +29,9 @@ export class CreateEntryDto {
 
     category: Category;
 
-    constructor(amount: number, date: Date, currency: string, name: string, comment: string, description: string, category?: Category){
+    photo: any;
+
+    constructor(amount: number, date: Date, currency: string, name: string, comment: string, description: string, category?: Category, photo?: any){
         this.amount = amount;
         this.date = date;
         this.currency = currency;
@@ -37,5 +39,6 @@ export class CreateEntryDto {
         this.comment = comment;
         this.description = description;
         this.category = category
+        this.photo = photo;
     } 
 }
