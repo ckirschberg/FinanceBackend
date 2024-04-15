@@ -7,6 +7,7 @@ import { EntryModule } from './entry/entry.module';
 import { dbConfig } from '../data.source';
 import { CategoriesModule } from './categories/categories.module';
 import { AuthModule } from './authentication/auth.module';
+import { TodosModule } from './todos/todos.module';
 
 @Module({
  imports: [
@@ -16,6 +17,7 @@ import { AuthModule } from './authentication/auth.module';
    EntryModule,
    CategoriesModule,
    AuthModule,
+   TodosModule,
  ],
  controllers: [AppController],
  providers: [AppService],
