@@ -13,7 +13,7 @@ export class TodosService {
 
 
   create(createTodoDto: CreateTodoDto) {
-    return this.todoRepository.create(createTodoDto);
+    return this.todoRepository.save(createTodoDto);
   }
 
   findAll() {
