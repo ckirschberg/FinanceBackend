@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { HttpService } from '@nestjs/axios';
 import { catchError, firstValueFrom } from 'rxjs';
 import { AxiosError } from 'axios';
+import { UserEntity } from '../authentication/entities/user';
 
 
 @Injectable()
@@ -37,12 +38,15 @@ export class EntryService {
     }
 
 
-  create(createEntryDto: CreateEntryDto) {
+  create(createEntryDto: CreateEntryDto, user: UserEntity) {
+    createEntryDto.user = user;
     return this.entryRepository.save(createEntryDto)
   }
 
-  findAll() {
-    return this.entryRepository.find();
+  findAll(user: UserEntity) {
+    return this.entryRepository.find({
+      where: { user: { id: user.id } }
+    });
   }
 
   findOne(id: number) {

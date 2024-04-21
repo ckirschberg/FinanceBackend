@@ -8,11 +8,13 @@ import { UserEntity } from '../src/authentication/entities/user';
 import { UsersService } from '../src/users/users.service';
 import { AuthService } from '../src/authentication/auth.service';
 import { log } from 'console';
+import { Entry } from '../src/entry/entities/entry.entity';
 
 describe('ProblemController (e2e)', () => {
   let app: INestApplication;
   let moduleFixture: TestingModule;
   let usersRepository: Repository<UserEntity>
+  let entryRepository: Repository<Entry>
   let usersService: UsersService
   let authService: AuthService
   let connection: Connection
@@ -25,7 +27,9 @@ describe('ProblemController (e2e)', () => {
     usersService = moduleFixture.get(UsersService);
     authService = moduleFixture.get(AuthService);
     usersRepository = moduleFixture.get(getRepositoryToken(UserEntity))
-    usersRepository.query("DELETE FROM user_entity")
+    entryRepository = moduleFixture.get(getRepositoryToken(Entry))
+    await usersRepository.query("DELETE FROM entry")
+    await usersRepository.query("DELETE FROM user_entity")
 
     connection = moduleFixture.get(Connection)
     app = moduleFixture.createNestApplication();

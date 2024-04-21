@@ -1,5 +1,6 @@
 import { IsDate, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { Category } from "../../categories/entities/category.entity";
+import { UserEntity } from "../../authentication/entities/user";
 
 export class CreateEntryDto {
 
@@ -28,6 +29,8 @@ export class CreateEntryDto {
     description: string
 
     category: Category;
+
+    user: UserEntity;
 
     photo: any;
 

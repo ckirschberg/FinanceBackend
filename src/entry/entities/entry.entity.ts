@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm"
 import { Category } from "../../categories/entities/category.entity"
+import { UserEntity } from "../../authentication/entities/user"
 
 @Entity()
 export class Entry {
@@ -26,6 +27,12 @@ export class Entry {
 
     @Column() 
     photo: string
+
+    @ManyToOne(() => UserEntity, (user) => user.entries, {
+        eager: true
+    })
+    user: UserEntity
+
 
     @ManyToOne(() => Category, (category) => category.entries, {
         eager: true
