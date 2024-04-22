@@ -11,6 +11,8 @@ import { Entry } from '../src/entry/entities/entry.entity';
 import { Repository } from 'typeorm';
 import { UsersService } from '../src/users/users.service';
 import { AuthService } from '../src/authentication/auth.service';
+import { EntryService } from '../src/entry/entry.service';
+import { MockEntryService } from './mockentry.service';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -22,7 +24,8 @@ describe('AppController (e2e)', () => {
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+    .overrideProvider(EntryService).useClass(MockEntryService).compile();
 
     app = moduleFixture.createNestApplication();
     usersService = moduleFixture.get(UsersService);

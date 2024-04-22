@@ -1,5 +1,6 @@
 import { IsDate, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { Category } from "../../categories/entities/category.entity";
+import { UserEntity } from "../../authentication/entities/user";
 
 export class CreateEntryDto {
 
@@ -30,6 +31,8 @@ export class CreateEntryDto {
     category: Category;
 
     photo: any;
+
+    user: any;
 
     constructor(amount: number, date: Date, currency: string, name: string, comment: string, description: string, category?: Category, photo?: any){
         this.amount = amount;

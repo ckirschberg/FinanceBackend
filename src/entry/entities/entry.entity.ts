@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm"
 import { Category } from "../../categories/entities/category.entity"
+import { UserEntity } from "../../authentication/entities/user"
 
 @Entity()
 export class Entry {
@@ -31,4 +32,8 @@ export class Entry {
         eager: true
     })
     category: Category
+
+    @ManyToOne(() => UserEntity, (user) => user.entries)
+    user: UserEntity
+    
 }

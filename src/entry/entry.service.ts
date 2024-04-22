@@ -37,7 +37,8 @@ export class EntryService {
     }
 
 
-  create(createEntryDto: CreateEntryDto) {
+  create(createEntryDto: CreateEntryDto, user: any) {
+    createEntryDto.user = user;
     return this.entryRepository.save(createEntryDto)
   }
 
