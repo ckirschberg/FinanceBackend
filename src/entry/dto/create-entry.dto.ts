@@ -30,6 +30,8 @@ export class CreateEntryDto {
 
     category: Category;
 
+    user: UserEntity;
+
     photo: any;
 
     user: any;

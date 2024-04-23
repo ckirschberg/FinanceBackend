@@ -14,7 +14,7 @@ export class EntryController {
   @UseGuards(JwtAuthGuard)
   @Post("protected-endpoint")
   testProtectedEndpoint() {
-    console.log("You got through the gate");
+    // console.log("You got through the gate");
     return { message: "You got through the gate" }
   }
 
@@ -24,19 +24,17 @@ export class EntryController {
     const loggedInUser = req.user;
     console.log(req.user);
     
-    
     const display_url = await this.entryService.saveImage(createEntryDto.photo.base64);
     createEntryDto.photo = display_url; //just save the url to the image in our database.
-
-  
 
     return this.entryService.create(createEntryDto, loggedInUser);
   }
 
   
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.entryService.findAll();
+  findAll(@Request() req) {
+    return this.entryService.findAll(req.user);
   }
 
   @Get(':id')

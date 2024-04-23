@@ -13,7 +13,7 @@ export const dbConfig: TypeOrmModuleOptions = {
     database: process.env.DB_NAME,
     synchronize: true, // set to false to get manual migrations
     autoLoadEntities: true,
-    entities: ['dist/**/*.entity{.ts,.js}'],
+    // entities: ['dist/**/*.entity{.ts,.js}'],
     migrations: ['dist/src/migrations/*{.ts,.js}'],
 };
 

@@ -28,6 +28,12 @@ export class Entry {
     @Column() 
     photo: string
 
+    @ManyToOne(() => UserEntity, (user) => user.entries, {
+        eager: true
+    })
+    user: UserEntity
+
+
     @ManyToOne(() => Category, (category) => category.entries, {
         eager: true
     })

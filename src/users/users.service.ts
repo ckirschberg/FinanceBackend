@@ -11,6 +11,7 @@ export class UsersService {
     async upgrade(userId: number) {
       const user = await this.findUserById(userId); // Finding the user by the userId
       user.role = Role.PremiumUser; // Changing the role in memory. 
+      
       return this.userRepository.save(user); // Saving the updated user obj. into database
     }
 
