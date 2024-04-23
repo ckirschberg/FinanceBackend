@@ -12,6 +12,7 @@ import { Repository } from 'typeorm';
 import { UsersService } from '../src/users/users.service';
 import { AuthService } from '../src/authentication/auth.service';
 import { EntryService } from '../src/entry/entry.service';
+import { MockEntryService } from './mockentry.service';
 
 describe('EntryController (e2e)', () => {
   let app: INestApplication;

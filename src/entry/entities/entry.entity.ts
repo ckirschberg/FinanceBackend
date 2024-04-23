@@ -38,8 +38,4 @@ export class Entry {
         eager: true
     })
     category: Category
-
-    @ManyToOne(() => UserEntity, (user) => user.entries)
-    user: UserEntity
-    
 }
